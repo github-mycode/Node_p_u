@@ -8,14 +8,14 @@ const getNotes = () => {
 const addNotes = (title, body) => {
     const notes = loadNotes();
 
-    // const duplicatesArray = notes.filter((note) => {
-    //     return note.title === title;
-    // })
+    const duplicatesArray = notes.filter((note) => {
+        return note.title === title;
+    })
 
-     const isDuplicate = notes.find((note)=> {return note.title === title})
+     //const isDuplicate = notes.find((note)=> {return note.title === title})
     //console.log('node' + duplicatesArray);
     //console.log('node ki length' + duplicatesArray.length);
-    if(isDuplicate){
+    if(duplicatesArray){
         notes.push({
             title:  title,
             body: body
