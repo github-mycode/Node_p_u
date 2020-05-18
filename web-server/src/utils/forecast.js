@@ -7,7 +7,7 @@ const forecast = (location, callcack) => {
         if(error){
             callcack('Unable to connect with internet.', undefined);
         }
-        else if(response.body.cod == "400" || response.body.cod == "401"){
+        else if(response.body.cod == "400" || response.body.cod == "401" || response.body.cod == "404"){
             callcack(response.body.message, undefined);
         }
         else{
@@ -29,14 +29,18 @@ const forecast = (location, callcack) => {
                 if(error){
                     callcack('Unable to connect with internet.', undefined);
                 }
-
+                else if(response.body.error){
+                    callcack(response.body.error.info, undefined);
+                }
                 else{
                     //console.log(response.body);
                     callcack(undefined, {
-                        location: response.body.location.name,
+                        location: response.body.location.name +" "+ response.body.location.country +" "+ response.body.location.region,
                         weather: response.body.current.weather_descriptions,
                         weatherIcons: response.body.current.weather_icons,
-                        humidity: response.body.current.humidity
+                        humidity: response.body.current.humidity,
+                        temperature: response.body.current.temperature
+                        
                     });
                 }
             })

@@ -1,12 +1,12 @@
 const express = require('express');
 const geocode = require('./utils/geocode.js');
-const forecast = require('./utils/forecast.js')
+const forecast = require('./utils/forecast.js');
 const path = require('path')
 const app = express();
 
 const hbs = require('hbs')
 
-const port =3010;
+const port =3000;
 
 //define path for express config
 const viewsPath = path.join(__dirname, '../templates/views') 
@@ -97,37 +97,75 @@ app.get('/weather', (req, res)=> {
            }
        )
    }
+
     var location = req.query.address
     var action = req.query.action
-    if(action == 'forecast'){
-    forecast.forecast(location, (error, {temperature, rain}) => {      
+
+    forecast.forecastS(location, (error, {location, weather, weatherIcons={undefined}, humidity, temperature}={}) => { 
+        console.log('inside forcastS')     
        if(error){
            res.send({
                error: error
            })
        }
-       res.send({
-        temperature: temperature,
-        rain: rain
-       })
-    })
-    }
-    else{
-        geocode.geocode(location,(error, {latitude, longitude, location})=>{
-        if(error){
-           res.send({
-               error: error
-           })
-       }
+       else{
         res.send({
-        error: error,
-        latitude: latitude,
-        longitude: longitude,
-        location: location
-       })
+            
+                address: location,
+                weatherDescription: weather,
+                weatherIcon: weatherIcons[0],
+                humidity: humidity,
+                temperature: temperature
+            
+       })  
+       }
+
     })
-    }
+    
+    // const weather ={
+    // Location: location,
+    // temperature: undefined,
+    // rain: undefined,
+    // latitude: undefined,
+    // longitude: undefined,
+    // address: undefined,
+    // weatherDescription: undefined,
+    // weatherIcons: undefined, 
+    // humidity: undefined
+    // }
+    // forecast.forecast(location, (error, {temperature, rain}={}) => {      
+    //    if(error){
+    //        res.send({
+    //            error: error
+    //        })
+    //    }
+
+    //        weather.temperature = temperature
+    //        weather.rain = rain
+        
+    // })
+
+
+    //     geocode.geocode(location,(error, {latitude, longitude, location}={})=>{
+    //     if(error){
+    //        res.send({
+    //            error: error
+    //        })
+    //    }
+    //     weather.latitude = latitude;
+    //     weather.longitude = longitude;
+    //     res.send({
+            
+    //         weather
+    //    })
+    // })
 })
+
+
+
+
+
+
 
 app.get('/product', (req, res)=> {
 //req.query.[name]

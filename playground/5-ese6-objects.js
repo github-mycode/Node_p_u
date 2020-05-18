@@ -29,12 +29,13 @@ console.log(productlable);
 console.log(stock);
 console.log(rating);
 
-const transaction = (type, {lable:productlable, stock, rating = 4})=>{
+const transaction = (type, {lable:productlable, stock, rating = 4} = {})=>{
     console.log('in transaction')
     console.log(productlable);
     console.log(stock);
     console.log(rating);
 }
 
-transaction('type', product)
+transaction('type')
 
+transaction('type', product)
